@@ -421,6 +421,9 @@ forval i= 1/7 {
 	recode sn005_`i'  (1=1 "Spouse/Partner") (2/20 =2 "Family") (21 = 3 "Friend") (22/27 = 4 "Other non-kin")  (96 = 5 "Other") (-1 -2=.), gen(	confidant_relation_`i')
 }
 
+* spouse in network
+egen spouse= anymatch(confidant_relation_1 confidant_relation_2 confidant_relation_3 confidant_relation_4 confidant_relation_5 confidant_relation_6 confidant_relation_7) ,val(1)
+replace spouse=. if sn_size_w6==-9 & spouse==0 & wave==6 // wave 6 missings
 
 save SHARE_comb_network.dta, replace
 
